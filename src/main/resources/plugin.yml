@@ -1,0 +1,3 @@
+name: Chat_Plugin
+version: '${project.version}'
+main: org.nyanneko0113.chat_plugin.ChatPlugin
