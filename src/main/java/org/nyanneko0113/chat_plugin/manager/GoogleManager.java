@@ -13,6 +13,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,8 +22,10 @@ import java.util.List;
 public class GoogleManager {
 
     public static String getText(String text) throws IOException{
-        String before_text = getJson(text).get(0).getAsJsonArray().get(1).getAsJsonArray().get(0).getAsString();
-        return before_text.replaceAll("\\s+", "");
+        text = text.replaceAll("　", "").replaceAll(" ", "");
+        Bukkit.broadcastMessage(text);
+        JsonArray json = getJson(text + ",");
+        return json.get(0).getAsJsonArray().get(1).getAsJsonArray().get(0).getAsString();
     }
 
     private static JsonArray getJson(String text) throws IOException {
