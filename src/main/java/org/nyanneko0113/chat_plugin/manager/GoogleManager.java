@@ -22,8 +22,6 @@ import java.util.List;
 public class GoogleManager {
 
     public static String getText(String text) throws IOException{
-        text = text.replaceAll("　", "").replaceAll(" ", "");
-        Bukkit.broadcastMessage(text);
         JsonArray json = getJson(text + ",");
         return json.get(0).getAsJsonArray().get(1).getAsJsonArray().get(0).getAsString();
     }

@@ -1,3 +1,9 @@
 name: Chat_Plugin
 version: '0.0.1_beta_20240805'
 main: org.nyanneko0113.chat_plugin.ChatPlugin
+
+commands:
+  team_join:
+    description: 参加する
+  team_create:
+    description: あ
