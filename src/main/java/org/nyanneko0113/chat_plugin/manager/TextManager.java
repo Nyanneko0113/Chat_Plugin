@@ -2,28 +2,34 @@ package org.nyanneko0113.chat_plugin.manager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.ibm.icu.text.Transliterator;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-public class GoogleManager {
+public class TextManager {
 
-    public static String getText(String text) throws IOException{
-        JsonArray json = getJson(text + ",");
-        return json.get(0).getAsJsonArray().get(1).getAsJsonArray().get(0).getAsString();
+    //テキストを漢字に変換
+    public static String textTOkanji(String text) {
+        try {
+            text = text.replaceAll("nn", "n");
+            Transliterator transliterator = Transliterator.getInstance("Latin-Hiragana");
+
+            String text_before = transliterator.transliterate(text);
+            String text_after = text_before.replaceAll("　", "").replaceAll(" ", "") + ",";
+
+            JsonArray json = getJson(text_after);
+            return json.get(0).getAsJsonArray().get(1).getAsJsonArray().get(0).getAsString() + ")";
+        }
+        catch (IOException ex) {
+            Bukkit.getLogger().warning("変換中にエラーが発生しました：" + ex);
+            return text;
+        }
     }
 
     private static JsonArray getJson(String text) throws IOException {
@@ -42,6 +48,4 @@ public class GoogleManager {
         con.disconnect();
         return  (new Gson()).fromJson(content.toString(), JsonArray.class);
     }
-
-
 }
