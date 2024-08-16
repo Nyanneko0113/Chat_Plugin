@@ -6,13 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.nyanneko0113.chat_plugin.manager.GoogleManager;
 import org.nyanneko0113.chat_plugin.manager.TeamChatManager;
+import org.nyanneko0113.chat_plugin.manager.TextManager;
 
 import java.io.IOException;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class PlayerChatListener implements Listener {
 
@@ -32,6 +30,12 @@ public class PlayerChatListener implements Listener {
                     event.setCancelled(true);
                 }
             }
+            else {
+                for (Player players : Bukkit.getOnlinePlayers()) {
+                    sendMessage(message, normal_format, players);
+                    event.setCancelled(true);
+                }
+            }
 
         }
     }
@@ -39,8 +43,8 @@ public class PlayerChatListener implements Listener {
     private static void sendMessage(String message, String format, OfflinePlayer player) throws IOException {
         if (player != null) {
             if (player.isOnline()) {
-                if (!message.equalsIgnoreCase(GoogleManager.getText(message))) {
-                    player.getPlayer().sendMessage(format + "(" + GoogleManager.getText(message) + ")");
+                if (!message.equalsIgnoreCase(TextManager.textTOkanji(message))) {
+                    player.getPlayer().sendMessage(format + "(" + TextManager.textTOkanji(message) + ")");
                 }
                 else {
                     //変換と同じの場合はGoogleから取得しない
